@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "611127243613",
+    "project_id": "gubkin-sport",
+    "storage_bucket": "gubkin-sport.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611127243613:android:e12716c7b9bd3cb2aaeeb4",
+        "android_client_info": {
+          "package_name": "com.gubkinsport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611127243613-gjn2e7epjm4dc757lro998nulgksa0tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE72KudeA1Xt43tOniyT_jsjymRaZmLiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611127243613-gjn2e7epjm4dc757lro998nulgksa0tj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

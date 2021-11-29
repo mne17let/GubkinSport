@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">GubkinSport</string>
+
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="back">Назад</string>
+    <string name="login">Войти</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="create">Создать</string>
+    <string name="register">Регистрация</string>
+    <string name="email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="account_repair">Восстановление аккаунта</string>
+    <string name="accept">Подтвердить</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="input_again">Введите еще раз</string>
+
+    <string name="at_first_log_in">Для начала, выполните вход или зарегистрируйтесь</string>
+
+    <string name="make_request">Записаться</string>
+
+    <string name="object_is_available">Открыто</string>
+    <string name="object_is_not_available">Закрыто</string>
+    <string name="new_avatar">new avatar</string>
+    <string name="input_your_information">Заполните информацию о себе</string>
+
+    <string name="hint_input_pass">Введите пароль</string>
+    <string name="hint_input_email">Введите почту</string>
+
+    <string name="hint_input_first_name">Введите имя</string>
+    <string name="hint_input_last_name">Введите фамилию</string>
+    <string name="hint_input_gender">Укажите ваш пол</string>
+    <string name="hint_input_study_group">Введите вашу группу</string>
+    <string name="hint_input_study_year">Укажите ваш курс</string>
+    <string name="hint_input_faculty">Укажите ваш факультет</string>
+    <string name="hint_input_bio_or_favourite_sports">Укажите ваши любимые виды спорта</string>
+
+    <string name="send_first_profile_data">Отправить</string>
+
+    <string name="button_open_settings">Настройки</string>
+
+    <string name="button_open_profile">Профиль</string>
+
+    <string name="item_gender_male">Мужчина</string>
+    <string name="item_gender_female">Женщина</string>
+
+    <string name="empty_profile_setting_text">Заполните поле</string>
+
+    <string name="send_check_in">Отправить заявку</string>
+
+    <string name="choose_date">Выберите дату</string>
+
+    <string name="choice_for_check_in">Вы выбрали</string>
+
+    <string-array name="genders">
+        <item>Мужчина</item>
+        <item>Женщина</item>
+    </string-array>
+
+</resources>

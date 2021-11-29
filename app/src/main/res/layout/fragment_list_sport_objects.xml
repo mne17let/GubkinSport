@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ProgressBar
+        android:id="@+id/id_progress_bar_list_sport_objects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/id_main_content_fragment_list_sport_objects"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/main_brown">
+
+            <TextView
+                android:id="@+id/id_textview_hello_name"
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Привет"
+                android:textSize="16sp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/id_button_open_profile"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/main_pink"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_marginHorizontal="4dp"
+                android:text="@string/button_open_profile"
+                android:drawableLeft="@drawable/ic_settings"
+                android:drawableTint="@color/black"
+                android:padding="4dp"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/id_recyclerview_list_sport_objects"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="main_white">#FFF1C1</color>
+    <color name="main_brown">#A64942</color>
+    <color name="main_blue">#293462</color>
+    <color name="main_pink">#FE5F55</color>
+    <color name="main_blue60">#99293462</color>
+
+    <color name="black70">#B3000000</color>
+    <color name="transparent100">#00000000</color>
+
+    <color name="my_gray">#BABABA</color>
+
+    <color name="red">#FF0000</color>
+
+    <color name="item_list_sport_objects_background">#DADADA</color>
+
+    <color name="status_open_item_list_sport_objects_title">#4CAF50</color>
+    <color name="status_closed_item_list_sport_objects_title">#FF0000</color>
+
+    <color name="button_make_request_item_list_sport_objects_title">#FF9800</color>
+
+    <color name="sport_object_available">#4CAF50</color>
+    <color name="sport_object_unavailable">#FD2A2A</color>
+</resources>
