@@ -1,160 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/main_white">
+    android:background="@color/main_purple">
 
-    <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/input_your_information"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_marginVertical="8dp"
+                android:background="@color/design_default_color_primary"
+                android:textColor="@color/white"
+                android:padding="4dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_firstname"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_input_first_name"
+                android:layout_marginVertical="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/id_edittext_firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_lastname"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_input_last_name"
+                android:layout_marginVertical="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/id_edittext_lastname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_gender"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/id_edittext_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:hint="@string/hint_input_gender"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_study_group"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_input_study_group"
+                android:layout_marginVertical="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/id_edittext_study_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_study_year"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/id_edittext_study_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:hint="@string/hint_input_study_year"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_faculty"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/id_edittext_faculty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:hint="@string/hint_input_faculty"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/id_textinputlayout_bio_or_fav_sports"
+
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_input_bio_or_favourite_sports"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textColorHint="@color/white"
+                app:boxStrokeColor="@color/white"
+                app:hintTextColor="@color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/id_edittext_bio_or_fav_sports"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/white"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/id_button_send_first_profile_data"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="4dp"
+        android:layout_marginHorizontal="8dp"
+        android:backgroundTint="@color/green"
+        android:text="@string/send_first_profile_data"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="visible"
+        android:enabled="true"
+        android:layout_weight="0"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/input_your_information"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:layout_marginVertical="8dp"
-            android:background="@color/main_pink"
-            android:textColor="@color/white"
-            android:padding="4dp"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_firstname"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_first_name"
-            android:layout_marginVertical="4dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_edittext_firstname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_lastname"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_last_name"
-            android:layout_marginVertical="4dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_edittext_lastname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_gender"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="4dp">
-
-            <AutoCompleteTextView
-                android:id="@+id/id_edittext_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:hint="@string/hint_input_gender"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_study_group"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_study_group"
-            android:layout_marginVertical="4dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_edittext_study_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_study_year"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="4dp">
-
-            <AutoCompleteTextView
-                android:id="@+id/id_edittext_study_year"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:hint="@string/hint_input_study_year"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_faculty"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="4dp">
-
-            <AutoCompleteTextView
-                android:id="@+id/id_edittext_faculty"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:hint="@string/hint_input_faculty" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/id_textinputlayout_bio_or_fav_sports"
-
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_input_bio_or_favourite_sports"
-            android:layout_marginVertical="4dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/id_edittext_bio_or_fav_sports"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/id_button_send_first_profile_data"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="8dp"
-            android:backgroundTint="@color/main_pink"
-            android:text="@string/send_first_profile_data"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:visibility="visible"
-            android:enabled="true" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>

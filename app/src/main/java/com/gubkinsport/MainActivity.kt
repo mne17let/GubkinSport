@@ -23,12 +23,14 @@ class MainActivity: AppCompatActivity() {
         showStartFragment()
     }
 
-    fun showCheckInOrLoginFragment(sportObjectId: String, haveProfile: Boolean, haveAccount: Boolean){
+    fun showCheckInOrLoginFragment(sportObjectId: String?, haveProfile: Boolean, haveAccount: Boolean){
 
         if(!haveAccount){
             showLoginFragment()
         } else{
-            showCheckInFragment(sportObjectId)
+            if (sportObjectId != null){
+                showCheckInFragment(sportObjectId)
+            }
         }
 
     }
@@ -77,7 +79,9 @@ class MainActivity: AppCompatActivity() {
     fun showFirstProfileSettings(){
         val newFragment = WriteProfileFragment()
 
-        supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        repeat(supportFragmentManager.backStackEntryCount){
+            supportFragmentManager.popBackStack()
+        }
 
         supportFragmentManager
             .beginTransaction()
@@ -107,11 +111,22 @@ class MainActivity: AppCompatActivity() {
     fun showSportObjectsListAfterSignOut(){
         val newFragment = FragmentListSportObjects()
 
-        supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        repeat(supportFragmentManager.backStackEntryCount){
+            supportFragmentManager.popBackStack()
+        }
 
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.id_frame_container, newFragment)
             .commit()
+    }
+
+    fun showMainPageAfterSendBooking(){
+
+        repeat(supportFragmentManager.backStackEntryCount){
+            supportFragmentManager.popBackStack()
+        }
+
+        showSportObjectsList()
     }
 }

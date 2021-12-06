@@ -4,32 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/main_purple">
 
     <TextView
         android:id="@+id/id_textview_check_in_into"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Запись в"
-        android:background="@color/black"
+        android:background="@color/design_default_color_primary"
         android:textColor="@color/white"
         android:gravity="center"
         android:textSize="20dp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"/>
 
     <Button
         android:id="@+id/id_popup_with_dates_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/choose_date"
-        android:background="@drawable/custom_background_with_ripple"
-
+        android:backgroundTint="@color/green"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="4dp"
         />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/id_periods_recyclerview"
@@ -43,7 +49,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/choice_for_check_in"
-        android:background="@color/black"
+        android:background="@color/design_default_color_primary"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="4dp"
         android:textColor="@color/white"
         android:gravity="center"
         android:textSize="20dp"
@@ -54,8 +62,11 @@
         android:id="@+id/id_send_check_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="4dp"
         android:text="@string/send_check_in"
-        android:layout_weight="0"/>
+        android:layout_weight="0"
+        android:backgroundTint="@color/green"
+        android:visibility="gone"/>
 
 </LinearLayout>

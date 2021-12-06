@@ -1,5 +1,6 @@
 package com.gubkinsport.fragment_login.ui
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -11,17 +12,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.gubkinsport.MainActivity
+import com.gubkinsport.MyViewModelFactory
 import com.gubkinsport.R
 import com.gubkinsport.authentication.FirebaseAuthenticationHelper
 import com.gubkinsport.authentication.ValidationHelper
+import com.gubkinsport.data.models.people.StudentModel
 
 class LoginFragment: Fragment(R.layout.fragment_login) {
 
     private var areLoginViews = true
 
     private val authenticationHelper = FirebaseAuthenticationHelper()
+
+    private lateinit var lightTypeface: Typeface
+    private lateinit var boldTypeface: Typeface
 
     private lateinit var signInTextView: TextView
     private lateinit var signUpTextView: TextView
@@ -31,9 +42,18 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
     private lateinit var passTextInputLayout: TextInputLayout
     private lateinit var signInButton: Button
     private lateinit var signUpButton: Button
-    private lateinit var forgotPasswordTextView: TextView
     private lateinit var signBox: LinearLayout
     private lateinit var progressBar: ProgressBar
+
+    private lateinit var viewModel: LoginViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        lightTypeface = Typeface.createFromAsset(resources.assets, "nunito_extralight.ttf")
+        boldTypeface = Typeface.createFromAsset(resources.assets, "nunito_bold.ttf")
+
+        viewModel = MyViewModelFactory(requireActivity().application).create(LoginViewModel::class.java)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,7 +64,6 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         passEditText = view.findViewById(R.id.id_edittext_pass)
         signInButton = view.findViewById(R.id.id_sign_in_button)
         signUpButton = view.findViewById(R.id.id_sign_up_button)
-        forgotPasswordTextView = view.findViewById(R.id.id_textview_forgot_password)
         signBox = view.findViewById(R.id.id_login_and_reg_box)
         emailTextInputLayout = view.findViewById(R.id.id_textinputlayout_email)
         passTextInputLayout = view.findViewById(R.id.id_textinputlayout_pass)
@@ -58,13 +77,6 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         setSignInButton()
         setSignUpButton()
         setEditTexts()
-
-        forgotPasswordTextView.setOnClickListener {
-            authenticationHelper.signOut()
-            forgotPasswordTextView.text = authenticationHelper.getCurrentUser().toString()
-        }
-
-        forgotPasswordTextView.text = authenticationHelper.getCurrentUser().toString()
     }
 
     private fun setTextSignTextView(){
@@ -72,7 +84,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
             showSignIn()
         }
 
-        signInTextView.setTypeface(null, Typeface.BOLD)
+        signInTextView.setTypeface(boldTypeface, Typeface.BOLD)
 
         signUpTextView.setOnClickListener {
             showSignUp()
@@ -87,20 +99,17 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
 
         areLoginViews = true
 
-        signInTextView.setTextSize(24f)
+        signInTextView.setTextSize(28f)
         signUpTextView.setTextSize(16f)
 
-        signInTextView.setTypeface(null, Typeface.BOLD)
-        signUpTextView.setTypeface(null, Typeface.NORMAL)
+        signInTextView.setTypeface(boldTypeface, Typeface.BOLD)
+        signUpTextView.setTypeface(lightTypeface, Typeface.NORMAL)
 
-        signInTextView.setTextColor(resources.getColor(R.color.main_blue, null))
-        signUpTextView.setTextColor(resources.getColor(R.color.main_blue60, null))
+        signInTextView.setTextColor(resources.getColor(R.color.green))
+        signUpTextView.setTextColor(resources.getColor(R.color.white))
 
         signInButton.visibility = View.VISIBLE
         signUpButton.visibility = View.GONE
-
-        forgotPasswordTextView.visibility = View.VISIBLE
-        forgotPasswordTextView.text = authenticationHelper.getCurrentUser().toString()
 
         val imm: InputMethodManager = requireActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(signInTextView.windowToken, 0)
@@ -114,17 +123,16 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         areLoginViews = false
 
         signInTextView.setTextSize(16f)
-        signUpTextView.setTextSize(24f)
+        signUpTextView.setTextSize(28f)
 
-        signUpTextView.setTypeface(null, Typeface.BOLD)
-        signInTextView.setTypeface(null, Typeface.NORMAL)
+        signInTextView.setTextColor(resources.getColor(R.color.white))
+        signUpTextView.setTextColor(resources.getColor(R.color.green))
 
-        signInTextView.setTextColor(resources.getColor(R.color.main_blue60, null))
-        signUpTextView.setTextColor(resources.getColor(R.color.main_blue, null))
+        signUpTextView.setTypeface(boldTypeface, Typeface.BOLD)
+        signInTextView.setTypeface(lightTypeface, Typeface.NORMAL)
 
         signInButton.visibility = View.GONE
         signUpButton.visibility = View.VISIBLE
-        forgotPasswordTextView.visibility = View.GONE
 
         val imm: InputMethodManager = requireActivity().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(signUpTextView.windowToken, 0)
@@ -132,17 +140,12 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
 
     private fun showLoad(){
         signBox.visibility = View.GONE
-        forgotPasswordTextView.visibility = View.GONE
 
         progressBar.visibility = View.VISIBLE
     }
 
     private fun showErrorLoad(){
         signBox.visibility = View.VISIBLE
-
-        if(areLoginViews){
-            forgotPasswordTextView.visibility = View.VISIBLE
-        }
 
         progressBar.visibility = View.GONE
     }
@@ -165,9 +168,29 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
 
                 authenticationHelper.signIn(email, pass, object : AuthenticationCallback {
                     override fun onSuccess(data: FirebaseUser) {
-                        Toast.makeText(requireContext(), "Вход выполнен: $data", Toast.LENGTH_LONG).show()
-                        progressBar.visibility = View.GONE
-                        (activity as MainActivity).showSportObjectsListAfterLogIn()
+                        val currentUser = FirebaseAuth.getInstance().currentUser
+                        if (currentUser != null){
+                            FirebaseDatabase.getInstance().getReference("people").child(currentUser.uid)
+                                .addValueEventListener(object : ValueEventListener{
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val studentData = snapshot.getValue(StudentModel::class.java)
+                                        if (studentData != null){
+                                            viewModel.saveProfileData(studentData)
+
+                                            Toast.makeText(requireContext(), "Вход выполнен: $data", Toast.LENGTH_LONG).show()
+                                            progressBar.visibility = View.GONE
+                                            (activity as MainActivity).showSportObjectsListAfterLogIn()
+                                        }
+                                    }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Toast.makeText(requireContext(),
+                                            "Вход выполнен, но ваши данные не найдены: $data",
+                                            Toast.LENGTH_LONG).show()
+                                    }
+
+                                })
+                        }
                     }
 
                     override fun onError(error: String) {

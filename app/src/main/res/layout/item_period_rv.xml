@@ -2,15 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/id_item_period_linear"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginRight="8dp"
+    android:layout_marginBottom="4dp">
 
     <TextView
         android:id="@+id/id_open_time_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:background="@color/my_gray"
-        android:textColor="@color/white"
+        android:background="@color/period_item"
+        android:shadowColor="@color/period_item_shadow_color"
+        android:shadowRadius="0"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:textSize="20sp"
+        android:textColor="@color/period_text_color"
         android:text="@string/send_check_in"
         android:gravity="center" />
 

@@ -6,7 +6,7 @@ import com.gubkinsport.data.models.people.StudentModelRoom
 @Dao
 interface StudentDao {
 
-    @Insert() // onConflict = OnConflictStrategy.IGNORE
+    @Insert(onConflict = OnConflictStrategy.REPLACE) // onConflict = OnConflictStrategy.IGNORE
     suspend fun addStudent(newStudent: StudentModelRoom)
 
     @Query("SELECT * FROM student_table WHERE id = :newId")

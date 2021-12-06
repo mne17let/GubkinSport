@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@color/edittext_item">
 
     <ProgressBar
         android:id="@+id/id_progress_bar_list_sport_objects"
@@ -26,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/main_brown">
+            android:background="@color/main_purple">
 
             <TextView
                 android:id="@+id/id_textview_hello_name"
@@ -37,7 +38,7 @@
                 android:textSize="16sp"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:layout_gravity="center"/>
 
             <Button
@@ -45,13 +46,13 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/main_pink"
-                android:textColor="@color/black"
+                android:backgroundTint="@color/green"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:layout_marginHorizontal="4dp"
                 android:text="@string/button_open_profile"
-                android:drawableLeft="@drawable/ic_settings"
-                android:drawableTint="@color/black"
+                android:drawableLeft="@drawable/ic_profile_icon"
+                android:drawableTint="@color/white"
                 android:padding="4dp"
                 android:textAllCaps="false"/>
 

@@ -21,6 +21,8 @@ import com.gubkinsport.fragment_list_sport_objects.helpers.SportObjectsListListe
 class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
     ListSportObjectsAdapter.OnClickListener {
 
+    private var alreadyOpen = false
+
     // Тег для логов
     private val TAG_FRAGMENT = "FragListSportObjects"
 
@@ -32,6 +34,8 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
     private val fDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private val sportObjectsReference: DatabaseReference = fDatabase.getReference("sport_objects_data")
     private val userReference = fDatabase.getReference("people")
+    private lateinit var sportObjectslistener: SportObjectsListListener_FB
+    private var profileDataListener: GetProfileListener_FB? = null
 
     // ProfileData
     private var currentUserProfileData: StudentModel? = null
@@ -49,6 +53,12 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
     private lateinit var buttonOpenProfile: Button
 
     private val list = mutableListOf<UiSportObject>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setServerListeners()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,6 +82,25 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
         setDataSportObjectsChanged()
         setHelloTextView()
         setOpenProfileButton()
+        if(!alreadyOpen){
+            showLoad()
+            alreadyOpen = true
+        }
+    }
+
+    private fun setServerListeners(){
+        sportObjectslistener = SportObjectsListListener_FB()
+        sportObjectsReference.addValueEventListener(sportObjectslistener)
+
+        currentUser = authenticationHelper.getCurrentUser()
+        val checkUser = currentUser
+
+        if(checkUser != null){
+            val profileReference = userReference.child(checkUser.uid)
+            profileDataListener = GetProfileListener_FB()
+
+            profileReference.addValueEventListener(profileDataListener!!)
+        }
     }
 
     private fun setRecyclerView(){
@@ -82,44 +111,45 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
 
     private fun setNewListForAdapter(){
         adapter.setList(list)
+        showContent()
     }
 
     private fun setOpenProfileButton(){
-        buttonOpenProfile.setOnClickListener {
-            (activity as MainActivity).showProfileFragment()
-            // Toast.makeText(requireContext(), "Когда-нибудь вам будут доступны настройки", Toast.LENGTH_SHORT).show()
+        if (currentUser == null){
+            buttonOpenProfile.text = resources.getString(R.string.login)
+            buttonOpenProfile.setOnClickListener {
+                (activity as MainActivity).showCheckInOrLoginFragment(null, false, false)
+            }
+        } else {
+            buttonOpenProfile.setOnClickListener {
+                buttonOpenProfile.text = resources.getString(R.string.button_open_profile)
+                (activity as MainActivity).showProfileFragment()
+            }
         }
     }
 
     private fun setHelloTextView(){
-        currentUser = authenticationHelper.getCurrentUser()
-        val checkUser = currentUser
+        if (profileDataListener == null){
+            val newHelloText = "Привет, незнакомец!"
+            helloTextView.text = newHelloText
+        }
 
-        if(checkUser != null){
-            val profileReference = userReference.child(checkUser.uid)
-            val profileListener = GetProfileListener_FB(object : ProfileListenerCallBack {
-                override fun onSuccess(data: StudentModel) {
-                    currentUserProfileData = data
-                    val newHelloText = "Привет, ${data.firstName}"
-                    helloTextView.text = newHelloText
-                }
-
-                override fun onError() {
-                }
-            })
-
-            profileReference.addValueEventListener(profileListener)
-        } else{
-            helloTextView.text = "Привет, незнакомец!"
+        profileDataListener?.liveData?.observe(viewLifecycleOwner){
+            Log.d(TAG_FRAGMENT, "Пришли данные человека == $it")
+            if (it == null){
+                currentUserProfileData = null
+                val newHelloText = "Привет, незнакомец!"
+                helloTextView.text = newHelloText
+            } else {
+                currentUserProfileData = it
+                val newHelloText = "Привет, ${it.firstName}"
+                helloTextView.text = newHelloText
+            }
         }
     }
 
     private fun setDataSportObjectsChanged(){
-        val listener = SportObjectsListListener_FB()
-
-        sportObjectsReference.addValueEventListener(listener)
-
-        listener.liveData.observe(viewLifecycleOwner) { newList ->
+        sportObjectslistener.liveData.observe(viewLifecycleOwner) { newList ->
 
             Log.d(TAG_FRAGMENT, "Лайвдата передала: ${newList}")
 
@@ -177,10 +207,5 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
                 haveAccount = false
             )
         }
-    }
-
-    interface ProfileListenerCallBack{
-        fun onSuccess(data: StudentModel)
-        fun onError()
     }
 }

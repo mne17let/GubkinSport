@@ -1,9 +1,12 @@
 package com.gubkinsport.fragment_list_sport_objects.helpers
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
 class TimeHelper {
+
+    private val TAG_SIMPLE_TIME_HELPER = "SimpleTimeHelper"
 
     fun getCurrentTime(): Long {
         val currentTime: Long = Calendar.getInstance().time.time
@@ -11,9 +14,15 @@ class TimeHelper {
     }
 
     fun parseTimeFromString(string: String): Long{
-        val dateFormat = SimpleDateFormat("hh:mm dd-MM-yyyy", Locale.CANADA)
+        val dateFormat = SimpleDateFormat("HH:mm dd-MM-yyyy", Locale.getDefault())
 
-        return dateFormat.parse(string).time
+        Log.d(TAG_SIMPLE_TIME_HELPER, "Дата открытия  == ${string}")
+
+        val newDate = dateFormat.parse(string)
+
+        Log.d(TAG_SIMPLE_TIME_HELPER, "Объект даты  == ${newDate}")
+
+        return newDate.time
     }
 
     fun parseStringFromMilliseconds(milliseconds: Long): String{

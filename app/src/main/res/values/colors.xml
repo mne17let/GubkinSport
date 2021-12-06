@@ -30,4 +30,14 @@
 
     <color name="sport_object_available">#4CAF50</color>
     <color name="sport_object_unavailable">#FD2A2A</color>
+
+    <color name="green">#4CAF50</color>
+
+    <color name="main_purple">#441587</color>
+
+    <color name="edittext_item">#996AD6</color>
+
+    <color name="period_item">#FFFFFF</color>
+    <color name="period_text_color">#000000</color>
+    <color name="period_item_shadow_color">#000000</color>
 </resources>

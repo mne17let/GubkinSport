@@ -6,8 +6,16 @@
         <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/drawable/custom_background_with_ripple.xml" value="0.17407407407407408" />
         <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/drawable/ic_delete_booking.xml" value="0.1" />
         <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/drawable/ic_settings.xml" value="0.1" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/font/nunito_font.xml" value="0.1" />
         <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/fragment_bookings.xml" value="0.2" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/fragment_check_in.xml" value="0.1539855072463768" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/fragment_create_profile.xml" value="0.1539855072463768" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/fragment_list_sport_objects.xml" value="0.1539855072463768" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/fragment_login.xml" value="0.1539855072463768" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/item_for_edittexts_menu.xml" value="0.1539855072463768" />
         <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/item_list_sport_objects_constraint.xml" value="0.1" />
+        <entry key="..\:/Users/Vladimir/AndroidStudioProjects/GubkinSport/app/src/main/res/layout/item_period_rv.xml" value="0.1539855072463768" />
       </map>
     </option>
   </component>

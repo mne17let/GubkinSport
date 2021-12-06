@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/edittext_item">
 
     <TextView
         android:id="@+id/id_your_bookings_text"
@@ -22,4 +23,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/id_empty_bookings_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:text="@string/empty_bookings_text"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:textColor="@color/white"
+        />
 </LinearLayout>

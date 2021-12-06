@@ -9,10 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.gubkinsport.MainActivity
 import com.gubkinsport.MyViewModelFactory
 import com.gubkinsport.R
 import com.gubkinsport.data.models.people.Booking
@@ -22,6 +24,7 @@ import com.gubkinsport.data.models.sport_objects.ui_format.UiDay
 import com.gubkinsport.data.models.sport_objects.ui_format.UiPeriod
 import com.gubkinsport.fragment_list_sport_objects.helpers.DaysSortHelper
 import com.gubkinsport.fragment_list_sport_objects.helpers.TimeHelper
+import java.util.*
 
 // Класс фрагмента выбора времени и отправки заявки на посещение спортивного объекта
 
@@ -107,7 +110,12 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
 
     private fun setDaysRecyclerView(){
         periodsAdapter = PeriodsCheckInAdapter(this)
-        recyclerview_with_periods.layoutManager = LinearLayoutManager(requireContext())
+        // recyclerview_with_periods.layoutManager = LinearLayoutManager(requireContext())
+        recyclerview_with_periods.layoutManager = GridLayoutManager(
+            requireContext(),
+            3
+        )
+
         recyclerview_with_periods.adapter = periodsAdapter
     }
 
@@ -143,6 +151,10 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
                             stopLong
                         )
                     )
+
+                    Toast.makeText(requireContext(), "Заявка отправлена", Toast.LENGTH_SHORT).show()
+
+                    (activity as MainActivity).showMainPageAfterSendBooking()
                 } else{
                     Toast.makeText(requireContext(), "Выберите дату и время записи", Toast.LENGTH_SHORT).show()
                 }
@@ -154,7 +166,13 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
         popupMenu = PopupMenu(requireContext(), button_dates_popup_menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
             Toast.makeText(requireContext(), "Нажат итем: ${menuItem.title}, id: ${menuItem.itemId}", Toast.LENGTH_SHORT).show()
-            button_dates_popup_menu.text = menuItem.title
+            val newTextButtonDate = "Изменить дату"
+            button_dates_popup_menu.text = newTextButtonDate
+            val newTextCurrentChoiceDate = "Выбрана дата: ${menuItem.title}"
+            textview_current_choice.text = newTextCurrentChoiceDate
+            if (textview_current_choice.visibility == View.GONE){
+                textview_current_choice.visibility = View.VISIBLE
+            }
             setNewPeriods(menuItem.title.toString())
             resetClickedDate(menuItem.itemId)
             clickedDateId = menuItem.itemId
@@ -211,7 +229,7 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
     }
 
     private fun setNewTitle(name: String){
-        val newTitle = "Запись в $name"
+        val newTitle = "Запись в ${name.lowercase(Locale.getDefault())}"
         textview_sport_object_title.text = newTitle
     }
 
@@ -236,6 +254,10 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
 
         if (textview_current_choice.visibility == View.GONE){
             textview_current_choice.visibility = View.VISIBLE
+        }
+
+        if (check_in_button.visibility == View.GONE){
+            check_in_button.visibility = View.VISIBLE
         }
     }
 }

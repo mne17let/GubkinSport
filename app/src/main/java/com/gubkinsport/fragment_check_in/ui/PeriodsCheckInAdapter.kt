@@ -33,7 +33,7 @@ class PeriodsCheckInAdapter(private val onCLickListener: OnPeriodClickListener):
     }
 
     fun resetClickedItems(){
-        clickedHolder?.setUnClickedColors(R.color.white, R.color.my_gray)
+        clickedHolder?.setUnClickedColors(R.color.period_text_color, R.color.period_item, R.color.period_item_shadow_color)
 
         clickedHolder = null
         previousClickedHolder = null
@@ -56,7 +56,7 @@ class PeriodsCheckInAdapter(private val onCLickListener: OnPeriodClickListener):
         }*/
 
         if (holder == clickedHolder) {
-            holder.setClickedColors(R.color.white, R.color.black)
+            holder.setClickedColors(R.color.white, R.color.black, R.color.white)
         }
 
         holder.itemView.setOnClickListener{
@@ -73,8 +73,8 @@ class PeriodsCheckInAdapter(private val onCLickListener: OnPeriodClickListener):
             val white = holder.itemView.context.resources.getColor(R.color.white, null)
             val gray = holder.itemView.context.resources.getColor(R.color.my_gray, null)
 
-            previousClickedHolder?.setUnClickedColors(R.color.white, R.color.my_gray)
-            holder.setClickedColors(R.color.white, R.color.black)
+            previousClickedHolder?.setUnClickedColors(R.color.period_text_color, R.color.period_item, R.color.period_item_shadow_color)
+            holder.setClickedColors(R.color.white, R.color.black, R.color.white)
 
             onCLickListener.onClick(periodsList[position])
         }
@@ -94,19 +94,33 @@ class PeriodsCheckInAdapter(private val onCLickListener: OnPeriodClickListener):
         private val linear = itemView.findViewById<LinearLayout>(R.id.id_item_period_linear)
 
         fun bind(newPeriod: UiPeriod){
-            textView.text = newPeriod.open
+            var newMinute = newPeriod.openMinute.toString()
+            val newHour = newPeriod.openHour.toString()
+            if (newMinute.length == 1){
+                newMinute = "0$newMinute"
+            }
+            val uiTmeText = "$newHour:$newMinute"
+            textView.text = uiTmeText
         }
 
-        fun setClickedColors(@ColorRes textColor: Int, @ColorRes backColor: Int){
+        fun setClickedColors(@ColorRes textColor: Int, @ColorRes backColor: Int, @ColorRes shadowColor: Int){
             Log.d(TAG_PERIODS_ADAPTER, "Вызван setClickedColors со значениями: textColor = $textColor, backColor = $backColor")
             textView.setTextColor(itemView.context.resources.getColor(textColor, null))
             textView.setBackgroundColor(itemView.context.resources.getColor(backColor, null))
+            textView.setShadowLayer(0f,
+                0f,
+                0f,
+                itemView.context.resources.getColor(shadowColor, null))
         }
 
-        fun setUnClickedColors(@ColorRes textColor: Int, @ColorRes backColor: Int){
+        fun setUnClickedColors(@ColorRes textColor: Int, @ColorRes backColor: Int, @ColorRes shadowColor: Int){
             Log.d(TAG_PERIODS_ADAPTER, "Вызван setUnClickedColors со значениями: textColor = $textColor, backColor = $backColor")
             textView.setTextColor(itemView.context.resources.getColor(textColor, null))
             textView.setBackgroundColor(itemView.context.resources.getColor(backColor, null))
+            textView.setShadowLayer(0f,
+                0f,
+                0f,
+                itemView.context.resources.getColor(shadowColor, null))
         }
     }
 

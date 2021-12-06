@@ -27,6 +27,8 @@ class FragmentBookings: Fragment(R.layout.fragment_bookings), BookingsAdapter.On
     private lateinit var recyclerView: RecyclerView
     private lateinit var yourBookingsTextView: TextView
 
+    private lateinit var emptyBookingsText: TextView
+
     private val bookingsAdapter = BookingsAdapter(this)
 
     private val fDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -44,6 +46,7 @@ class FragmentBookings: Fragment(R.layout.fragment_bookings), BookingsAdapter.On
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerView = view.findViewById(R.id.id_bookings_recycler)
         yourBookingsTextView = view.findViewById(R.id.id_your_bookings_text)
+        emptyBookingsText = view.findViewById(R.id.id_empty_bookings_text)
 
         setUpBookingsRecycler()
         setUpLoadBookings()
@@ -63,6 +66,14 @@ class FragmentBookings: Fragment(R.layout.fragment_bookings), BookingsAdapter.On
                 newList.add(booking.value)
             }
             bookingsAdapter.setNewList(newList)
+
+            emptyBookingsText.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            yourBookingsTextView.visibility = View.VISIBLE
+        } else {
+            emptyBookingsText.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+            yourBookingsTextView.visibility = View.GONE
         }
     }
 
