@@ -1,11 +1,13 @@
 package com.gubkinsport.fragment_list_sport_objects.helpers
 
 import android.util.Log
+import com.gubkinsport.data.models.people.Booking
 import com.gubkinsport.data.models.sport_objects.Period
 import com.gubkinsport.data.models.sport_objects.ui_format.UiDay
 import com.gubkinsport.data.models.sport_objects.ui_format.UiPeriod
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 // Класс для сортировки объектов List, Map и конвертации строк во время и дату и обратно
 
@@ -17,6 +19,15 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
     fun sortDaysAndPeriods(): List<UiDay> {
         val result = sortMap()
         return result
+    }
+
+    fun sortOnlyPeriods(source: HashMap<String, Period>): List<UiPeriod> {
+        val result = getSortedListOfPeriods(source)
+        return result
+    }
+
+    fun sortBookings(source: List<Booking>){
+
     }
 
     private fun sortMap(): List<UiDay> {
@@ -80,7 +91,7 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
     private fun getSortedListOfPeriods(mapOfPeriods: HashMap<String, Period>): List<UiPeriod> {
         val sortedPeriods = mutableListOf<UiPeriod>()
 
-        //Log.d(TAG_TIME_HELPER, "Получена мапа: $mapOfPeriods")
+        Log.d(TAG_TIME_HELPER, "Получена мапа: $mapOfPeriods")
 
 
         val sortedMapOfOpensLongToString = sortedMapOf<Long, String>()
@@ -184,6 +195,8 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
                 }
             }
         }
+
+        Log.d(TAG_TIME_HELPER, "Итоговый результат: $sortedPeriods")
 
         return sortedPeriods
     }

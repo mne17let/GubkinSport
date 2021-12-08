@@ -177,7 +177,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                                         if (studentData != null){
                                             viewModel.saveProfileData(studentData)
 
-                                            Toast.makeText(requireContext(), "Вход выполнен: $data", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(requireContext(), "Вход выполнен", Toast.LENGTH_LONG).show()
                                             progressBar.visibility = View.GONE
                                             (activity as MainActivity).showSportObjectsListAfterLogIn()
                                         }
@@ -185,7 +185,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
 
                                     override fun onCancelled(error: DatabaseError) {
                                         Toast.makeText(requireContext(),
-                                            "Вход выполнен, но ваши данные не найдены: $data",
+                                            "Вход выполнен, но ваша анкета не найдена",
                                             Toast.LENGTH_LONG).show()
                                     }
 
@@ -221,7 +221,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
 
                 authenticationHelper.createNewUser(email, pass, object : AuthenticationCallback {
                     override fun onSuccess(data: FirebaseUser) {
-                        Toast.makeText(requireContext(), "Регистрация выполнена: $data", Toast.LENGTH_LONG).show()
+                        Toast.makeText(requireContext(), "Регистрация выполнена успешно", Toast.LENGTH_LONG).show()
                         progressBar.visibility = View.GONE
                         (activity as MainActivity).showFirstProfileSettings()
                     }

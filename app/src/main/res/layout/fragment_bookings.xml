@@ -17,6 +17,35 @@
         android:textSize="20sp"
         android:layout_weight="0"/>
 
+    <LinearLayout
+        android:id="@+id/id_lets_go_linear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_empty_bookings_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_bookings_text"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            />
+
+        <Button
+            android:id="@+id/id_lets_go_to_sport_objects_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lets_do_booking"
+            android:backgroundTint="@color/green"
+            android:layout_margin="8dp"
+            />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/id_bookings_recycler"
 
@@ -24,14 +53,4 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
 
-    <TextView
-        android:id="@+id/id_empty_bookings_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:text="@string/empty_bookings_text"
-        android:gravity="center"
-        android:layout_margin="8dp"
-        android:textColor="@color/white"
-        />
 </LinearLayout>

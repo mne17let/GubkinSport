@@ -11,7 +11,7 @@ import com.gubkinsport.fragment_login.ui.LoginFragment
 import com.gubkinsport.fragment_profile.FragmentProfile
 import com.gubkinsport.fragment_write_profile.ui.WriteProfileFragment
 
-class MainActivity: AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     // Тег для логов
     private val TAG_ACTIVITY = "MyMainActivity"
@@ -23,34 +23,38 @@ class MainActivity: AppCompatActivity() {
         showStartFragment()
     }
 
-    fun showCheckInOrLoginFragment(sportObjectId: String?, haveProfile: Boolean, haveAccount: Boolean){
+    fun showCheckInOrLoginFragment(
+        sportObjectId: String?,
+        haveProfile: Boolean,
+        haveAccount: Boolean
+    ) {
 
-        if(!haveAccount){
+        if (!haveAccount) {
             showLoginFragment()
-        } else{
-            if (sportObjectId != null){
+        } else {
+            if (sportObjectId != null) {
                 showCheckInFragment(sportObjectId)
             }
         }
 
     }
 
-    fun showSportObjectsListAfterLogIn(){
+    fun showSportObjectsListAfterLogIn() {
         showSportObjectsList()
     }
 
-    private fun showStartFragment(){
+    private fun showStartFragment() {
         showSportObjectsList()
     }
 
-    private fun showSportObjectsList(){
+    private fun showSportObjectsList() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.id_frame_container, FragmentListSportObjects())
             .commit()
     }
 
-    private fun showCheckInFragment(id: String){
+    private fun showCheckInFragment(id: String) {
         val newArgs = Bundle()
         newArgs.putString("id", id)
 
@@ -66,7 +70,7 @@ class MainActivity: AppCompatActivity() {
             .commit()
     }
 
-    private fun showLoginFragment(){
+    private fun showLoginFragment() {
         val newFragment = LoginFragment()
 
         supportFragmentManager
@@ -76,10 +80,10 @@ class MainActivity: AppCompatActivity() {
             .commit()
     }
 
-    fun showFirstProfileSettings(){
+    fun showFirstProfileSettings() {
         val newFragment = WriteProfileFragment()
 
-        repeat(supportFragmentManager.backStackEntryCount){
+        repeat(supportFragmentManager.backStackEntryCount) {
             supportFragmentManager.popBackStack()
         }
 
@@ -89,7 +93,7 @@ class MainActivity: AppCompatActivity() {
             .commit()
     }
 
-    fun showProfileFragment(){
+    fun showProfileFragment() {
         val newProfileFragment = FragmentProfile()
 
         supportFragmentManager.beginTransaction()
@@ -98,7 +102,7 @@ class MainActivity: AppCompatActivity() {
             .commit()
     }
 
-    fun showBookingsFragment(){
+    fun showBookingsFragment() {
         val newBookingFragment = FragmentBookings()
 
         supportFragmentManager
@@ -108,10 +112,10 @@ class MainActivity: AppCompatActivity() {
             .commit()
     }
 
-    fun showSportObjectsListAfterSignOut(){
+    fun showSportObjectsListAfterSignOut() {
         val newFragment = FragmentListSportObjects()
 
-        repeat(supportFragmentManager.backStackEntryCount){
+        repeat(supportFragmentManager.backStackEntryCount) {
             supportFragmentManager.popBackStack()
         }
 
@@ -121,9 +125,17 @@ class MainActivity: AppCompatActivity() {
             .commit()
     }
 
-    fun showMainPageAfterSendBooking(){
+    fun showMainPageAfterSendBooking() {
 
-        repeat(supportFragmentManager.backStackEntryCount){
+        repeat(supportFragmentManager.backStackEntryCount) {
+            supportFragmentManager.popBackStack()
+        }
+
+        showSportObjectsList()
+    }
+
+    fun showSOListAfterLetsGoButtonClicked() {
+        repeat(supportFragmentManager.backStackEntryCount) {
             supportFragmentManager.popBackStack()
         }
 

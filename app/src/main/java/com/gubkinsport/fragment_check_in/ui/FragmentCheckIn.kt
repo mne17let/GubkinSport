@@ -110,11 +110,11 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
 
     private fun setDaysRecyclerView(){
         periodsAdapter = PeriodsCheckInAdapter(this)
-        // recyclerview_with_periods.layoutManager = LinearLayoutManager(requireContext())
-        recyclerview_with_periods.layoutManager = GridLayoutManager(
+        recyclerview_with_periods.layoutManager = LinearLayoutManager(requireContext())
+        /*recyclerview_with_periods.layoutManager = GridLayoutManager(
             requireContext(),
             3
-        )
+        )*/
 
         recyclerview_with_periods.adapter = periodsAdapter
     }
@@ -130,10 +130,10 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
             val currentCache = cacheProfileData
 
             if (currentCache == null){
-                Toast.makeText(requireContext(), "В кэше ничего не найдено", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(requireContext(), "В кэше ничего не найдено", Toast.LENGTH_SHORT).show()
             } else{
 
-                Toast.makeText(requireContext(), "В кэше найден пользователь: ${currentCache.lastName}", Toast.LENGTH_SHORT).show()
+                // Toast.makeText(requireContext(), "В кэше найден пользователь: ${currentCache.lastName}", Toast.LENGTH_SHORT).show()
 
                 if (currentStringChoice != null){
                     val timeHelper = TimeHelper()
@@ -152,7 +152,7 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
                         )
                     )
 
-                    Toast.makeText(requireContext(), "Заявка отправлена", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(requireContext(), "Заявка отправлена", Toast.LENGTH_SHORT).show()
 
                     (activity as MainActivity).showMainPageAfterSendBooking()
                 } else{
@@ -165,7 +165,7 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
     private fun setPopUpMenu(){
         popupMenu = PopupMenu(requireContext(), button_dates_popup_menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
-            Toast.makeText(requireContext(), "Нажат итем: ${menuItem.title}, id: ${menuItem.itemId}", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(requireContext(), "Нажат итем: ${menuItem.title}, id: ${menuItem.itemId}", Toast.LENGTH_SHORT).show()
             val newTextButtonDate = "Изменить дату"
             button_dates_popup_menu.text = newTextButtonDate
             val newTextCurrentChoiceDate = "Выбрана дата: ${menuItem.title}"

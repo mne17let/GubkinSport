@@ -226,20 +226,20 @@ class WriteProfileFragment: Fragment(R.layout.fragment_create_profile) {
                 firebaseHelper.sendNewProfileSettings(newStudentModel, object :
                     SendProfileSettingsCallback {
                     override fun onSuccess(data: String) {
-                        Toast.makeText(requireContext(), "$data", Toast.LENGTH_SHORT).show()
-
+                        // Toast.makeText(requireContext(), "$data", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Ваша анкета успешно сохранена", Toast.LENGTH_SHORT).show()
                         viewModel.saveProfileData(newStudentModel)
 
                         (activity as MainActivity).showSportObjectsListAfterLogIn()
                     }
 
                     override fun onError(error: String) {
-                        Toast.makeText(requireContext(), "$error", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Ошибка отправки анкеты: $error", Toast.LENGTH_SHORT).show()
                     }
 
                 })
             } else {
-                Toast.makeText(requireContext(), "Email текущего пользователя пуст", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Ошибка отправки анкеты: пользователь не авторизован", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
