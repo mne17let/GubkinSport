@@ -47,7 +47,7 @@ class FragmentBookings : Fragment(R.layout.fragment_bookings),
         super.onCreate(savedInstanceState)
 
         viewModel =
-            MyViewModelFactory(requireActivity().application).create(BookingsViewModel::class.java)
+            MyViewModelFactory(requireActivity().application, (activity as MainActivity).repository).create(BookingsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -131,7 +131,7 @@ class FragmentBookings : Fragment(R.layout.fragment_bookings),
         if (mutableListOfBookings.size == 0) {
             showEmptyBookingsListState()
         }
-
         bookingsAdapter.setNewList(mutableListOfBookings)
+        Log.d("TAG_LOGIN_VIEWMODEL", "Выполнен onClick в FragmentBooking")
     }
 }

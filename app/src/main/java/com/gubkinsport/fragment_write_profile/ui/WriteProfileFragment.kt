@@ -39,7 +39,7 @@ class WriteProfileFragment: Fragment(R.layout.fragment_create_profile) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = MyViewModelFactory(requireActivity().application).create(WriteProfileViewModel::class.java)
+        viewModel = MyViewModelFactory(requireActivity().application, (activity as MainActivity).repository).create(WriteProfileViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

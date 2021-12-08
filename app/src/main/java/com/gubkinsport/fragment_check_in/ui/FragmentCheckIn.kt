@@ -2,13 +2,13 @@ package com.gubkinsport.fragment_check_in.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +28,7 @@ import java.util.*
 
 // Класс фрагмента выбора времени и отправки заявки на посещение спортивного объекта
 
-class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
+class FragmentCheckIn : Fragment(R.layout.fragment_check_in),
     PeriodsCheckInAdapter.OnPeriodClickListener {
 
     // Тег для логов
@@ -72,7 +72,8 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
 
         Log.d(TAG_FRAGMENT, "Аргументы фрагмента: $id}")
 
-        viewModel = MyViewModelFactory(requireActivity().application).create(CheckInViewModel::class.java)
+        viewModel =
+            MyViewModelFactory(requireActivity().application, (activity as MainActivity).repository).create(CheckInViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,47 +96,47 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
         getProfileData()
     }
 
-    private fun setProfileDataObserve(){
-        viewModel.profileDataLiveData.observe(viewLifecycleOwner){
+    private fun setProfileDataObserve() {
+        viewModel.profileDataLiveData.observe(viewLifecycleOwner) {
             cacheProfileData = it
         }
     }
 
-    private fun getProfileData(){
+    private fun getProfileData() {
         val currentUserId = FirebaseAuth.getInstance().uid
-        if (currentUserId != null){
+        if (currentUserId != null) {
             viewModel.getProfileData(currentUserId)
         }
     }
 
-    private fun setDaysRecyclerView(){
+    private fun setDaysRecyclerView() {
         periodsAdapter = PeriodsCheckInAdapter(this)
-        recyclerview_with_periods.layoutManager = LinearLayoutManager(requireContext())
-        /*recyclerview_with_periods.layoutManager = GridLayoutManager(
+        // recyclerview_with_periods.layoutManager = LinearLayoutManager(requireContext())
+        recyclerview_with_periods.layoutManager = GridLayoutManager(
             requireContext(),
             3
-        )*/
+        )
 
         recyclerview_with_periods.adapter = periodsAdapter
     }
 
-    private fun setDataSportObjectsChanged(){
+    private fun setDataSportObjectsChanged() {
         myObjectRef?.addValueEventListener(MyValueEventListener())
     }
 
-    private fun setCheckInButton(){
+    private fun setCheckInButton() {
         check_in_button.setOnClickListener {
             val currentStringChoice = currentStringChosenDate
 
             val currentCache = cacheProfileData
 
-            if (currentCache == null){
+            if (currentCache == null) {
                 // Toast.makeText(requireContext(), "В кэше ничего не найдено", Toast.LENGTH_SHORT).show()
-            } else{
+            } else {
 
                 // Toast.makeText(requireContext(), "В кэше найден пользователь: ${currentCache.lastName}", Toast.LENGTH_SHORT).show()
 
-                if (currentStringChoice != null){
+                if (currentStringChoice != null) {
                     val timeHelper = TimeHelper()
                     val startLong = timeHelper.parseTimeFromString(currentStringChoice)
                     val stopLong = startLong + 3600000
@@ -155,38 +156,40 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
                     // Toast.makeText(requireContext(), "Заявка отправлена", Toast.LENGTH_SHORT).show()
 
                     (activity as MainActivity).showMainPageAfterSendBooking()
-                } else{
-                    Toast.makeText(requireContext(), "Выберите дату и время записи", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Выберите дату и время записи",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
     }
 
-    private fun setPopUpMenu(){
+    private fun setPopUpMenu() {
         popupMenu = PopupMenu(requireContext(), button_dates_popup_menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
             // Toast.makeText(requireContext(), "Нажат итем: ${menuItem.title}, id: ${menuItem.itemId}", Toast.LENGTH_SHORT).show()
             val newTextButtonDate = "Изменить дату"
             button_dates_popup_menu.text = newTextButtonDate
-            val newTextCurrentChoiceDate = "Выбрана дата: ${menuItem.title}"
-            textview_current_choice.text = newTextCurrentChoiceDate
-            if (textview_current_choice.visibility == View.GONE){
+
+            if (textview_current_choice.visibility == View.GONE) {
                 textview_current_choice.visibility = View.VISIBLE
             }
-            setNewPeriods(menuItem.title.toString())
-            resetClickedDate(menuItem.itemId)
+            resetClickedDate(menuItem)
             clickedDateId = menuItem.itemId
             false
         }
     }
 
-    private fun setPopUpDatesButton(){
+    private fun setPopUpDatesButton() {
         button_dates_popup_menu.setOnClickListener {
             popupMenu.show()
         }
     }
 
-    private inner class MyValueEventListener: ValueEventListener {
+    private inner class MyValueEventListener : ValueEventListener {
 
         override fun onDataChange(snapshot: DataSnapshot) {
             currentObjectData = snapshot.getValue(SportObjectModel::class.java)
@@ -199,47 +202,53 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
         }
     }
 
-    private fun sortData(){
+    private fun sortData() {
         val currentData = currentObjectData
         val currentDays = currentData?.days
 
-        if (currentDays != null){
+        if (currentDays != null) {
             val helper = DaysSortHelper(currentDays)
             val listOfSortedDays = helper.sortDaysAndPeriods()
 
-            setNewPeriods(listOfSortedDays)
+            Log.d(TAG_FRAGMENT, "До сортировки == $currentDays")
+            Log.d(TAG_FRAGMENT, "После сортировки == $listOfSortedDays")
+
+            setNewDays(listOfSortedDays)
             sortListOfDays = listOfSortedDays
 
             currentData.name?.let { setNewTitle(it) }
         }
     }
 
-    private fun resetClickedDate(id: Int){
-        if (clickedDateId != id){
+    private fun resetClickedDate(menuItem: MenuItem) {
+        if (clickedDateId != menuItem.itemId) {
             periodsAdapter.resetClickedItems()
+            currentStringChosenDate = null
+            setNewPeriods(menuItem.title.toString())
         }
     }
 
-    private fun setNewPeriods(listOfDays: List<UiDay>){
+    private fun setNewDays(listOfDays: List<UiDay>) {
         popupMenu.menu.clear()
 
-        for (i in 0..listOfDays.size - 1){
+        for (i in 0..listOfDays.size - 1) {
             popupMenu.menu.add(0, i, i, listOfDays[i].date)
         }
     }
 
-    private fun setNewTitle(name: String){
+    private fun setNewTitle(name: String) {
         val newTitle = "Запись в ${name.lowercase(Locale.getDefault())}"
         textview_sport_object_title.text = newTitle
     }
 
-    private fun setNewPeriods(stringDate: String){
+    private fun setNewPeriods(stringDate: String) {
 
         val currentSortedDays = sortListOfDays
 
         var currentPeriods: List<UiPeriod> = emptyList()
-        for (day in currentSortedDays){
-            if (day.date == stringDate){
+        for (day in currentSortedDays) {
+            if (day.date == stringDate) {
+                setNewCurrentChosenDate(day.listOfPeriods[0])
                 currentPeriods = day.listOfPeriods
             }
         }
@@ -247,16 +256,29 @@ class FragmentCheckIn: Fragment(R.layout.fragment_check_in),
         periodsAdapter.setList(currentPeriods)
     }
 
+    private fun setNewCurrentChosenDate(period: UiPeriod) {
+        Log.d(TAG_FRAGMENT, "Выбран итем: $period")
+
+        val month = if (period.openMonth.toString().length < 2) { "0${period.openMonth}" } else { period.openMonth }
+        val newTextCurrentChoiceDate =
+            "Выбрана дата: ${period.openDayOfMonth}.${month}.${period.openYear}"
+        textview_current_choice.text = newTextCurrentChoiceDate
+    }
+
     override fun onClick(data: UiPeriod) {
-        val newText = "Вы выбрали: ${data.open}"
+        val minute = if (data.openMinute.toString().length < 2) { "0${data.openMinute}" } else { data.openMinute }
+        val month = if (data.openMonth.toString().length < 2) { "0${data.openMonth}" } else { data.openMonth }
+        val newChoice =
+            "${data.openHour}:${minute} ${data.openDayOfMonth}.${month}.${data.openYear}"
+        val newText = "Вы выбрали: ${newChoice}"
         textview_current_choice.text = newText
         currentStringChosenDate = data.open
 
-        if (textview_current_choice.visibility == View.GONE){
+        if (textview_current_choice.visibility == View.GONE) {
             textview_current_choice.visibility = View.VISIBLE
         }
 
-        if (check_in_button.visibility == View.GONE){
+        if (check_in_button.visibility == View.GONE) {
             check_in_button.visibility = View.VISIBLE
         }
     }

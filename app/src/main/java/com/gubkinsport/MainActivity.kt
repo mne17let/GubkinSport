@@ -4,23 +4,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentManager
+import com.gubkinsport.data.RepositoryImplementation
+import com.gubkinsport.data.database.CacheSourceImplementation
+import com.gubkinsport.data.database.CacheStudentDataBase
 import com.gubkinsport.fragment_bookings.FragmentBookings
 import com.gubkinsport.fragment_check_in.ui.FragmentCheckIn
 import com.gubkinsport.fragment_list_sport_objects.ui.FragmentListSportObjects
 import com.gubkinsport.fragment_login.ui.LoginFragment
 import com.gubkinsport.fragment_profile.FragmentProfile
 import com.gubkinsport.fragment_write_profile.ui.WriteProfileFragment
+import com.gubkinsport.interfaces.Repository
 
 class MainActivity : AppCompatActivity() {
 
     // Тег для логов
     private val TAG_ACTIVITY = "MyMainActivity"
 
+    lateinit var repository: Repository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         showStartFragment()
+        initRepo()
+    }
+
+    fun initRepo(){
+        val dataBaseInstance = CacheStudentDataBase.getStudentDatabase(applicationContext)
+        val dao = dataBaseInstance.studentDao()
+        val cache = CacheSourceImplementation(dao)
+        repository = RepositoryImplementation(applicationContext, cache)
     }
 
     fun showCheckInOrLoginFragment(
@@ -36,10 +50,13 @@ class MainActivity : AppCompatActivity() {
                 showCheckInFragment(sportObjectId)
             }
         }
-
     }
 
     fun showSportObjectsListAfterLogIn() {
+        repeat(supportFragmentManager.backStackEntryCount) {
+            supportFragmentManager.popBackStack()
+        }
+
         showSportObjectsList()
     }
 

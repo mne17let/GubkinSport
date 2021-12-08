@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -29,7 +30,9 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
 
     private var areLoginViews = true
 
-    private val authenticationHelper = FirebaseAuthenticationHelper()
+    private var authenticationHelper: FirebaseAuthenticationHelper? = FirebaseAuthenticationHelper("login_fragment")
+
+    private var valueEventListener: ValueEventListener? = null
 
     private lateinit var lightTypeface: Typeface
     private lateinit var boldTypeface: Typeface
@@ -45,14 +48,24 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
     private lateinit var signBox: LinearLayout
     private lateinit var progressBar: ProgressBar
 
-    private lateinit var viewModel: LoginViewModel
+    private var viewModel: LoginViewModel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("TAG_LOGIN_VIEWMODEL", "Выполнен onCreate в LoginFragment")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("TAG_LOGIN_VIEWMODEL", "Выполнен onDestroy в LoginFragment")
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         lightTypeface = Typeface.createFromAsset(resources.assets, "nunito_extralight.ttf")
         boldTypeface = Typeface.createFromAsset(resources.assets, "nunito_bold.ttf")
 
-        viewModel = MyViewModelFactory(requireActivity().application).create(LoginViewModel::class.java)
+        viewModel = MyViewModelFactory(requireActivity().application, (activity as MainActivity).repository).create(LoginViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +83,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         progressBar = view.findViewById(R.id.id_login_progressbar)
 
         setViews()
+        setLiveData()
     }
 
     private fun setViews(){
@@ -77,6 +91,41 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         setSignInButton()
         setSignUpButton()
         setEditTexts()
+    }
+
+    private fun setLiveData(){
+
+        valueEventListener = object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val studentData = snapshot.getValue(StudentModel::class.java)
+                if (studentData != null){
+                    viewModel?.saveProfileData(studentData, "Login_Fragment")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(),
+                    "Вход выполнен, но ваша анкета не найдена",
+                    Toast.LENGTH_LONG).show()
+            }
+
+        }
+
+        viewModel?.stateLogin?.observe(viewLifecycleOwner){
+            if (it is LoginViewModel.LoginState.Success){
+                authenticationHelper = null
+                FirebaseDatabase.getInstance().getReference("people").removeEventListener(
+                    valueEventListener as ValueEventListener
+                )
+                valueEventListener = null
+                viewModel = null
+                
+                Log.d("TAG_LOGIN_VIEWMODEL", "Зануление FirebaseAuthenticationHelper")
+
+                progressBar.visibility = View.GONE
+                (activity as MainActivity).showSportObjectsListAfterLogIn()
+            }
+        }
     }
 
     private fun setTextSignTextView(){
@@ -166,30 +215,13 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
             } else{
                 showLoad()
 
-                authenticationHelper.signIn(email, pass, object : AuthenticationCallback {
+                authenticationHelper?.signIn(email, pass, object : AuthenticationCallback {
                     override fun onSuccess(data: FirebaseUser) {
                         val currentUser = FirebaseAuth.getInstance().currentUser
-                        if (currentUser != null){
+                        val currentVEL = valueEventListener
+                        if (currentUser != null && currentVEL != null){
                             FirebaseDatabase.getInstance().getReference("people").child(currentUser.uid)
-                                .addValueEventListener(object : ValueEventListener{
-                                    override fun onDataChange(snapshot: DataSnapshot) {
-                                        val studentData = snapshot.getValue(StudentModel::class.java)
-                                        if (studentData != null){
-                                            viewModel.saveProfileData(studentData)
-
-                                            Toast.makeText(requireContext(), "Вход выполнен", Toast.LENGTH_LONG).show()
-                                            progressBar.visibility = View.GONE
-                                            (activity as MainActivity).showSportObjectsListAfterLogIn()
-                                        }
-                                    }
-
-                                    override fun onCancelled(error: DatabaseError) {
-                                        Toast.makeText(requireContext(),
-                                            "Вход выполнен, но ваша анкета не найдена",
-                                            Toast.LENGTH_LONG).show()
-                                    }
-
-                                })
+                                .addValueEventListener(currentVEL)
                         }
                     }
 
@@ -219,7 +251,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
             } else{
                 showLoad()
 
-                authenticationHelper.createNewUser(email, pass, object : AuthenticationCallback {
+                authenticationHelper?.createNewUser(email, pass, object : AuthenticationCallback {
                     override fun onSuccess(data: FirebaseUser) {
                         Toast.makeText(requireContext(), "Регистрация выполнена успешно", Toast.LENGTH_LONG).show()
                         progressBar.visibility = View.GONE

@@ -41,7 +41,7 @@ class FragmentProfile: Fragment(R.layout.fragment_profile) {
 
         // viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        viewModel = MyViewModelFactory(requireActivity().application).create(ProfileViewModel::class.java)
+        viewModel = MyViewModelFactory(requireActivity().application, (activity as MainActivity).repository).create(ProfileViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

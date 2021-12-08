@@ -33,6 +33,8 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
     private fun sortMap(): List<UiDay> {
         val longStringSortedMap: SortedMap<Long, String> = getStringLongMap()
 
+        Log.d(TAG_TIME_HELPER, "Получена мапа: ${sourceHashMap.keys}")
+
         val longSortedListOfKeys = longStringSortedMap.keys
 
         val sortedListOfStringDate = mutableListOf<String>()
@@ -40,6 +42,8 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
         for (key in longSortedListOfKeys) {
             val newValue = longStringSortedMap[key]
             if (newValue != null) {
+                // Log.d(TAG_TIME_HELPER, "Дата: ${newValue}")
+
                 sortedListOfStringDate.add(newValue)
             }
         }
@@ -53,18 +57,22 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
             if (newValueStringDate != null && newValueMapOfPeriodsCurrentStringDate != null) {
                 val sortedPeriods = getSortedListOfPeriods(newValueMapOfPeriodsCurrentStringDate)
 
-                // Log.d(TAG_TIME_HELPER, "$sortedPeriods")
+
+                /*Log.d(TAG_TIME_HELPER, "Сорт: $newValueStringDate")
+                Log.d(TAG_TIME_HELPER, "Несорт: $newValueMapOfPeriodsCurrentStringDate")*/
+
+                Log.d(TAG_TIME_HELPER, "$sortedPeriods")
 
                 sortedListOfDays.add(UiDay(longDate, newValueStringDate, sortedPeriods))
             }
         }
 
         for (day in sortedListOfDays) {
-            Log.d(TAG_TIME_HELPER, "День: ${day.date}, дата в мс: ${day.dateLong}")
+            // Log.d(TAG_TIME_HELPER, "День: ${day.date}, дата в мс: ${day.dateLong}")
 
             if (day.listOfPeriods != null) {
                 for (period in day.listOfPeriods) {
-                    Log.d(TAG_TIME_HELPER, "${period}")
+                    // Log.d(TAG_TIME_HELPER, "${period}")
                 }
             }
         }
@@ -74,6 +82,8 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
 
     private fun getStringLongMap(): SortedMap<Long, String> {
         val newMap = sortedMapOf<Long, String>()
+
+        // Log.d(TAG_TIME_HELPER, "Получена мапа: ${sourceHashMap.keys}")
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
@@ -85,14 +95,15 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
             }
         }
 
+        // Log.d(TAG_TIME_HELPER, "Итоговая мапа: ${newMap}")
+
         return newMap
     }
 
     private fun getSortedListOfPeriods(mapOfPeriods: HashMap<String, Period>): List<UiPeriod> {
         val sortedPeriods = mutableListOf<UiPeriod>()
 
-        Log.d(TAG_TIME_HELPER, "Получена мапа: $mapOfPeriods")
-
+        // Log.d(TAG_TIME_HELPER, "Получена мапа: $mapOfPeriods")
 
         val sortedMapOfOpensLongToString = sortedMapOf<Long, String>()
 
@@ -100,7 +111,7 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
             val currentPeriod = mapOfPeriods[stringKey]
             val currentOpen = currentPeriod?.open
 
-            val dateFormat = SimpleDateFormat("hh:mm dd-MM-yyyy", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("HH:mm dd-MM-yyyy", Locale.getDefault())
 
             var dateFromString: Date? = null
             if (currentOpen != null) {
@@ -149,6 +160,8 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
                     // Log.d(TAG_TIME_HELPER, "После парсинга строк открытие == ${dateFromStringOpen}")
 
                     if (dateFromStringClose != null && dateFromStringOpen != null) {
+                        Log.d(TAG_TIME_HELPER, "Получена строка: ${dateFromStringOpen}")
+                        Log.d(TAG_TIME_HELPER, "Получено время: ${dateFromStringOpen.time}")
                         val longTimeOpen = dateFromStringOpen.time
                         val longTimeClose = dateFromStringClose.time
 
@@ -159,6 +172,10 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
                         closeCalendar.timeInMillis = longTimeClose
 
 
+
+                        // Log.d(TAG_TIME_HELPER, "Итоговый месяц: ${openCalendar.get(Calendar.MONTH)}")
+                        Log.d(TAG_TIME_HELPER, "Итоговый месяц: ${closeCalendar.get(Calendar.MONTH)}")
+
                         val newPeriod = UiPeriod(
                             longTimeOpen,
                             longTimeClose,
@@ -168,12 +185,12 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
                             openCalendar.get(Calendar.MINUTE),
                             openCalendar.get(Calendar.HOUR_OF_DAY),
                             openCalendar.get(Calendar.DAY_OF_MONTH),
-                            openCalendar.get(Calendar.MONTH),
+                            openCalendar.get(Calendar.MONTH) + 1,
                             openCalendar.get(Calendar.YEAR),
 
                             closeCalendar.get(Calendar.MINUTE),
                             closeCalendar.get(Calendar.HOUR_OF_DAY),
-                            closeCalendar.get(Calendar.DAY_OF_MONTH),
+                            closeCalendar.get(Calendar.DAY_OF_MONTH) + 1,
                             closeCalendar.get(Calendar.MONTH),
                             closeCalendar.get(Calendar.YEAR)
                         )
@@ -196,7 +213,7 @@ class DaysSortHelper(private val sourceHashMap: HashMap<String, HashMap<String, 
             }
         }
 
-        Log.d(TAG_TIME_HELPER, "Итоговый результат: $sortedPeriods")
+        // Log.d(TAG_TIME_HELPER, "Итоговый результат: $sortedPeriods")
 
         return sortedPeriods
     }

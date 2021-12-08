@@ -7,6 +7,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -27,7 +28,7 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
     private val TAG_FRAGMENT = "FragListSportObjects"
 
     // Firebase Auth
-    private val authenticationHelper = FirebaseAuthenticationHelper()
+    // private val authenticationHelper = FirebaseAuthenticationHelper()
     private var currentUser: FirebaseUser? = null
 
     // Firebase
@@ -92,7 +93,7 @@ class FragmentListSportObjects: Fragment(R.layout.fragment_list_sport_objects),
         sportObjectslistener = SportObjectsListListener_FB()
         sportObjectsReference.addValueEventListener(sportObjectslistener)
 
-        currentUser = authenticationHelper.getCurrentUser()
+        currentUser = FirebaseAuth.getInstance().currentUser
         val checkUser = currentUser
 
         if(checkUser != null){
